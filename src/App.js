@@ -28,12 +28,12 @@ function App() {
         <button>Search</button>
       </form>
       <header className="app-header">
-        {poke.map((x, i) => (
-          <div key={x.pokemon + i}>
-            <h2>{x.pokemon}</h2>
-            <p>{x.attack}</p>
-            <p>{x.defense}</p>
-            <img src={x.url_image} />
+        {poke.map(({ pokemon, attack, defense, url_image }, i) => (
+          <div key={pokemon + i}>
+            <h2>{pokemon}</h2>
+            <p>{attack}</p>
+            <p>{defense}</p>
+            <img src={url_image} />
           </div>
         ))}
       </header>
