@@ -1,15 +1,21 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import { getPoke } from './services/fetch-utils';
+import Spinner from './Spinner';
+import Pokemon from './Pokemon';
 
 function App() {
   const [poke, setPoke] = useState([]);
-  const [query, setQuery] = useState('chu');
+  const [query, setQuery] = useState('char');
+  const [isLoading, setIsLoading] = useState(false);
 
   async function load() {
-    const data = await getPoke(query);
-
-    setPoke(data.data.results);
+    setIsLoading(true);
+    const {
+      data: { results },
+    } = await getPoke(query);
+    setIsLoading(false);
+    setPoke(results);
   }
 
   useEffect(() => {
@@ -27,16 +33,7 @@ function App() {
         <input onChange={(e) => setQuery(e.target.value)} />
         <button>Search</button>
       </form>
-      <header className="app-header">
-        {poke.map(({ pokemon, attack, defense, url_image }, i) => (
-          <div key={pokemon + i}>
-            <h2>{pokemon}</h2>
-            <p>{attack}</p>
-            <p>{defense}</p>
-            <img src={url_image} />
-          </div>
-        ))}
-      </header>
+      <header className="app-header">{isLoading ? <Spinner /> : <Pokemon poke={poke} />}</header>
     </div>
   );
 }
